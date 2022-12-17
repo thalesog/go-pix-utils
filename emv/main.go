@@ -1,17 +1,19 @@
 package emv
 
 import (
-	"github.com/thalesog/go-pix-utils/types"
 	"log"
 	"strconv"
+
+	"github.com/thalesog/go-pix-utils/types"
 )
 
-func ParseEmvTag(emv string) types.EmvTag {
+func ParseEmvTag(emv string) (parsedTag types.EmvTag, err error) {
 	tag := emv[0:2]
 	size := emv[2:4]
 	sizeInt, err := strconv.Atoi(size)
 	if err != nil {
-		panic(err)
+		log.Printf("Error parsing size: %s", err)
+		return parsedTag, err
 	}
 
 	value := emv[4 : 4+sizeInt]
@@ -20,14 +22,18 @@ func ParseEmvTag(emv string) types.EmvTag {
 		Size:  sizeInt,
 		Value: value,
 		Tag:   tag,
-	}
+	}, nil
 }
 
 func ParseMaiEmv(maiTag types.EmvTag) types.MerchantAccountInformation {
 	var parsedMai types.MerchantAccountInformation
 
 	for true {
-		parsedTag := ParseEmvTag(maiTag.Value)
+		parsedTag, err := ParseEmvTag(maiTag.Value)
+		if err != nil {
+			log.Printf("Error parsing tag: %s", err)
+			break
+		}
 		log.Printf("Tag: %s, Size: %d, Value: %s", parsedTag.Tag, parsedTag.Size, parsedTag.Value)
 		maiTag.Value = maiTag.Value[parsedTag.Size+4:]
 
@@ -49,12 +55,13 @@ func ParseMaiEmv(maiTag types.EmvTag) types.MerchantAccountInformation {
 	return parsedMai
 }
 
-func ParseTxId(emv string) types.AditionDataFieldTemplate {
-	var parsedTag types.EmvTag
-	var parsedEmv types.AditionDataFieldTemplate
-
+func ParseTxId(emv string) (parsedEmv types.AditionDataFieldTemplate) {
 	for true {
-		parsedTag = ParseEmvTag(emv)
+		parsedTag, err := ParseEmvTag(emv)
+		if err != nil {
+			log.Printf("Error parsing tag: %s", err)
+			break
+		}
 		log.Printf("Tag: %s, Size: %d, Value: %s", parsedTag.Tag, parsedTag.Size, parsedTag.Value)
 		emv = emv[parsedTag.Size+4:]
 
@@ -72,13 +79,13 @@ func ParseTxId(emv string) types.AditionDataFieldTemplate {
 	return parsedEmv
 }
 
-func ParsePixStatic(emv string) types.PixStaticEmv {
-
-	var parsedTag types.EmvTag
-	var parsedEmv types.PixStaticEmv
-
+func ParsePixStatic(emv string) (parsedEmv types.PixStaticEmv) {
 	for true {
-		parsedTag = ParseEmvTag(emv)
+		parsedTag, err := ParseEmvTag(emv)
+		if err != nil {
+			log.Printf("Error parsing tag: %s", err)
+			break
+		}
 		log.Printf("Tag: %s, Size: %d, Value: %s", parsedTag.Tag, parsedTag.Size, parsedTag.Value)
 		emv = emv[parsedTag.Size+4:]
 
