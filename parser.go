@@ -1,4 +1,4 @@
-package emv
+package main
 
 import (
 	"errors"
@@ -87,7 +87,7 @@ func ParsePix(emvString string) (parsedPix types.ParsedPixEmv, err error) {
 		err = errors.New("invalid pix")
 	}
 
-	if ValidateCRC(parsedPix.Raw) == false {
+	if validateCRC(parsedPix.Raw) == false {
 		err = errors.New("invalid crc")
 	}
 

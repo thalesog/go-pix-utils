@@ -1,10 +1,33 @@
-package emv
+package main
 
 import (
 	"github.com/stretchr/testify/assert"
 	"github.com/thalesog/go-pix-utils/types"
 	"testing"
 )
+
+func TestParsePixStatic(t *testing.T) {
+	testingEmv, err := ParsePix(staticEmv)
+
+	assert.Nil(t, err)
+	assert.Equal(t, staticElements, testingEmv.Elements)
+	assert.Equal(t, staticEmv, testingEmv.Raw)
+	assert.Equal(t, "static", testingEmv.Type)
+}
+
+func TestParsePixDynamic(t *testing.T) {
+	testingEmv, err := ParsePix(dynamicEmv)
+
+	assert.Nil(t, err)
+	assert.Equal(t, dynamicElements, testingEmv.Elements)
+	assert.Equal(t, dynamicEmv, testingEmv.Raw)
+	assert.Equal(t, "dynamic", testingEmv.Type)
+}
+
+func TestDetectInvalidCrc(t *testing.T) {
+	_, err := ParsePix(staticEmvWrongCrc)
+	assert.Errorf(t, err, "invalid crc")
+}
 
 func TestParseEmvTag(t *testing.T) {
 	var emvTag types.EmvTag

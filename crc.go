@@ -1,4 +1,4 @@
-package emv
+package main
 
 import (
 	"fmt"
@@ -9,13 +9,13 @@ import (
 
 var crcTable = crc16.MakeTable(crc16.CRC16_CCITT_FALSE)
 
-func CalculateCRC(value string) string {
+func calculateCRC(value string) string {
 	crcInt := crc16.Checksum([]byte(value), crcTable)
 
 	return strings.ToUpper(fmt.Sprintf("%04X", crcInt))
 }
 
-func ValidateCRC(value string) bool {
+func validateCRC(value string) bool {
 	match, err := regexp.MatchString(`6304\w{4}$`, value)
 
 	if err != nil || match == false {
@@ -24,7 +24,7 @@ func ValidateCRC(value string) bool {
 
 	crc := value[len(value)-4:]
 	value = value[:len(value)-4]
-	calculatedCRC := CalculateCRC(value)
+	calculatedCRC := calculateCRC(value)
 	return crc == calculatedCRC
 
 }

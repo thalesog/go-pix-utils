@@ -1,4 +1,4 @@
-package emv
+package main
 
 import "github.com/thalesog/go-pix-utils/types"
 
