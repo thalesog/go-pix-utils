@@ -8,14 +8,26 @@
     target="blank"
   >
     <img
-      src="https://img.shields.io/github/license/thalesog/go-pix-utils?style=for-the-badge&color=blueviolet"
+      src="https://img.shields.io/github/license/thalesog/go-pix-utils"
       alt="License"
     />
   </a>
   <a href="https://github.com/thalesog/go-pix-utils/stargazers" target="blank">
     <img
-      src="https://img.shields.io/github/stars/thalesog/go-pix-utils?style=for-the-badge&color=blueviolet"
+      src="https://img.shields.io/github/stars/thalesog/go-pix-utils"
       alt="Stars"
+    />
+  </a>
+<a href="https://pkg.go.dev/github.com/thalesog/go-pix-utils/pixUtils" target="blank">
+    <img
+      src="https://pkg.go.dev/badge/github.com/thalesog/go-pix-utils"
+      alt="GoDoc"
+    />
+  </a>
+<a href="https://goreportcard.com/report/github.com/thalesog/go-pix-utils" target="blank">
+    <img
+      src="https://goreportcard.com/badge/github.com/thalesog/go-pix-utils?force=true"
+      alt="Go Report Card"
     />
   </a>
 </p>
