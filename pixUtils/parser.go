@@ -87,7 +87,7 @@ func ParsePix(emvString string) (parsedPix PixObject, err error) {
 		err = errors.New("invalid pix")
 	}
 
-	if validateCRC(parsedPix.Raw) == false {
+	if !validateCRC(parsedPix.Raw) {
 		expectedCrc := calculateCRC(parsedPix.Raw[:len(parsedPix.Raw)-4])
 		errorMessage := fmt.Sprintf("invalid CRC: %s expected: %s", parsedPix.Elements.CRC.Value, expectedCrc)
 		err = errors.New(errorMessage)

@@ -18,7 +18,7 @@ func calculateCRC(value string) string {
 
 func validateCRC(value string) bool {
 	match, err := regexp.MatchString(`6304\w{4}$`, value)
-	if err != nil || match == false {
+	if err != nil || !match {
 		return false
 	}
 
