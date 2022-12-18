@@ -24,7 +24,23 @@
 
 > Pix-Utils is a set of tools to parse, generate and validate payments of Brazil Instant Payment System (Pix), making fast and simple to handle charges and proccess then in your project. Originally developed using [TypeScript](https://github.com/thalesog/pix-utils), this is the Go version of the library.
 
-# 🚀 Usage
+# 🚀 Features
+
+- [x] Parse Static Pix EMV
+- [x] Parse Dynamic Pix EMV
+- [x] Validate CRC16
+- [x] Generate Static Pix EMV
+- [x] Generate Dynamic Pix EMV
+- [ ] Generate QRCode Image from EMV or Pix
+
+This library also normalize the input data to the Pix standard, so you don't need to worry about it.
+It follows the [Pix Specification](https://www.bcb.gov.br/content/estabilidadefinanceira/pix/Regulamento_Pix/II_ManualdePadroesparaIniciacaodoPix.pdf), that mainly contains the following guidelines about EMV data structure:
+
+- Merchant Name: 25 characters
+- Merchant City: 15 characters
+- Pix Key/Payload URL: 77 characters
+
+# 📦 Installation
 
 ### Install the package in your project
 
@@ -38,17 +54,22 @@ go get github.com/thalesog/go-pix-utils
 package main
 
 import (
-	"github.com/thalesog/go-pix-utils/pixUtils"
+  "fmt"
+  "github.com/thalesog/go-pix-utils/pixUtils"
 )
 
 func main() {
-	pixUtils.CreateStaticPix(pixUtils.CreateStaticPixParams{
+  pix := pixUtils.CreateStaticPix(pixUtils.CreateStaticPixParams{
     MerchantName:      "Thales Ogliari",
     MerchantCity:      "São Miguel do Oeste",
     PixKey:            "thalesog@me.com",
     TransactionAmount: 10.00,
     AditionalData:     "Pedido 123",
   })
+
+  fmt.Printf("Pix Type: %s \n", pix.Type)
+  fmt.Printf("EMV Code: %s \n", pix.Raw)
+  fmt.Printf("Pix Elements: %v \n", pix.Elements)
 }
 ```
 
@@ -58,29 +79,22 @@ func main() {
 package main
 
 import (
-	"github.com/thalesog/go-pix-utils/pixUtils"
+  "fmt"
+  "github.com/thalesog/go-pix-utils/pixUtils"
 )
 
 func main() {
-	pixUtils.CreateDynamicPix(pixUtils.CreateDynamicPixParams{
-    MerchantName:      "Thales Ogliari",
-    MerchantCity:      "São Miguel do Oeste",
-    Url:               "https://pix.thalesogliari.com.br",
+  pix := pixUtils.CreateDynamicPix(pixUtils.CreateDynamicPixParams{
+    MerchantName: "Thales Ogliari",
+    MerchantCity: "São Miguel do Oeste",
+    Url:          "https://pix.thalesogliari.com.br",
   })
+
+  fmt.Printf("Pix Type: %s \n", pix.Type)
+  fmt.Printf("EMV Code: %s \n", pix.Raw)
+  fmt.Printf("Pix Elements: %v \n", pix.Elements)
 }
 ```
-
-
-## 📍 To Do
-
-- [x] Parse Static Pix EMV
-- [x] Parse Dynamic Pix EMV
-- [x] Parse Pix without specifying the type
-- [x] Validate CRC16
-- [x] Generate Static Pix EMV
-- [x] Generate Dynamic Pix EMV
-- [ ] Generate QRCode from EMV or Pix
-- [ ] Refactor EMV parsing and remove DRY code
 
 # 🍰 Contributing
 
