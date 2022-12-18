@@ -1,9 +1,10 @@
 package main
 
 import (
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/thalesog/go-pix-utils/types"
-	"testing"
 )
 
 func TestParsePixStatic(t *testing.T) {

@@ -2,9 +2,10 @@ package main
 
 import (
 	"errors"
-	"github.com/thalesog/go-pix-utils/types"
 	"log"
 	"strconv"
+
+	"github.com/thalesog/go-pix-utils/types"
 )
 
 func parseEmvTag(emv string) (parsedTag types.EmvTag, err error) {
