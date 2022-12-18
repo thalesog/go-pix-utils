@@ -32,14 +32,53 @@
 go get github.com/thalesog/go-pix-utils
 ```
 
+### Create Static Pix
+
+```go
+package main
+
+import (
+	"github.com/thalesog/go-pix-utils/pixUtils"
+)
+
+func main() {
+	pixUtils.CreateStaticPix(pixUtils.CreateStaticPixParams{
+    MerchantName:      "Thales Ogliari",
+    MerchantCity:      "São Miguel do Oeste",
+    PixKey:            "thalesog@me.com",
+    TransactionAmount: 10.00,
+    AditionalData:     "Pedido 123",
+  })
+}
+```
+
+### Create Dynamic Pix
+
+```go
+package main
+
+import (
+	"github.com/thalesog/go-pix-utils/pixUtils"
+)
+
+func main() {
+	pixUtils.CreateDynamicPix(pixUtils.CreateDynamicPixParams{
+    MerchantName:      "Thales Ogliari",
+    MerchantCity:      "São Miguel do Oeste",
+    Url:               "https://pix.thalesogliari.com.br",
+  })
+}
+```
+
+
 ## 📍 To Do
 
 - [x] Parse Static Pix EMV
 - [x] Parse Dynamic Pix EMV
 - [x] Parse Pix without specifying the type
 - [x] Validate CRC16
-- [ ] Generate Static Pix EMV
-- [ ] Generate Dynamic Pix EMV
+- [x] Generate Static Pix EMV
+- [x] Generate Dynamic Pix EMV
 - [ ] Generate QRCode from EMV or Pix
 - [ ] Refactor EMV parsing and remove DRY code
 

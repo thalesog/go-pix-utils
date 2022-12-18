@@ -1,14 +1,13 @@
-package main
+package pixUtils
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"strconv"
-
-	"github.com/thalesog/go-pix-utils/types"
 )
 
-func parseEmvTag(emv string) (parsedTag types.EmvTag, err error) {
+func parseEmvTag(emv string) (parsedTag EmvTag, err error) {
 	tag := emv[0:2]
 	size := emv[2:4]
 	sizeInt, err := strconv.Atoi(size)
@@ -19,14 +18,14 @@ func parseEmvTag(emv string) (parsedTag types.EmvTag, err error) {
 
 	value := emv[4 : 4+sizeInt]
 
-	return types.EmvTag{
+	return EmvTag{
 		Size:  sizeInt,
 		Value: value,
 		Tag:   tag,
 	}, nil
 }
 
-func parsePixEmv(emv string, parsedCode types.PixEmv) types.PixEmv {
+func parsePixEmv(emv string, parsedCode PixEmv) PixEmv {
 	parsedTag, err := parseEmvTag(emv)
 	parsedCode = fillPixEmv(parsedTag, parsedCode)
 
@@ -43,7 +42,7 @@ func parsePixEmv(emv string, parsedCode types.PixEmv) types.PixEmv {
 	return parsedCode
 }
 
-func parseMAI(maiTag types.EmvTag, parsedMAI types.MerchantAccountInformation) types.MerchantAccountInformation {
+func parseMAI(maiTag EmvTag, parsedMAI MaiStructure) MaiStructure {
 
 	parsedTag, err := parseEmvTag(maiTag.Value)
 	parsedMAI = fillMAI(parsedTag, parsedMAI)
@@ -61,7 +60,7 @@ func parseMAI(maiTag types.EmvTag, parsedMAI types.MerchantAccountInformation) t
 	return parsedMAI
 }
 
-func parseTxId(maiTag types.EmvTag, parsedTxId types.AditionDataFieldTemplate) types.AditionDataFieldTemplate {
+func parseTxId(maiTag EmvTag, parsedTxId AdditionalDataStructure) AdditionalDataStructure {
 
 	parsedTag, err := parseEmvTag(maiTag.Value)
 	parsedTxId = fillTxId(parsedTag, parsedTxId)
@@ -79,9 +78,9 @@ func parseTxId(maiTag types.EmvTag, parsedTxId types.AditionDataFieldTemplate) t
 	return parsedTxId
 }
 
-func ParsePix(emvString string) (parsedPix types.ParsedPixEmv, err error) {
+func ParsePix(emvString string) (parsedPix PixObject, err error) {
 	parsedPix.Raw = emvString
-	parsedPix.Elements = parsePixEmv(emvString, types.PixEmv{})
+	parsedPix.Elements = parsePixEmv(emvString, PixEmv{})
 	parsedPix.Type = getPixType(parsedPix.Elements)
 
 	if parsedPix.Type == "invalid" {
@@ -89,7 +88,9 @@ func ParsePix(emvString string) (parsedPix types.ParsedPixEmv, err error) {
 	}
 
 	if validateCRC(parsedPix.Raw) == false {
-		err = errors.New("invalid crc")
+		expectedCrc := calculateCRC(parsedPix.Raw[:len(parsedPix.Raw)-4])
+		errorMessage := fmt.Sprintf("invalid CRC: %s expected: %s", parsedPix.Elements.CRC.Value, expectedCrc)
+		err = errors.New(errorMessage)
 	}
 
 	return

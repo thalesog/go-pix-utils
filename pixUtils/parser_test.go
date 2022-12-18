@@ -1,10 +1,9 @@
-package main
+package pixUtils
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/thalesog/go-pix-utils/types"
 )
 
 func TestParsePixStatic(t *testing.T) {
@@ -31,11 +30,11 @@ func TestDetectInvalidCrc(t *testing.T) {
 }
 
 func TestParseEmvTag(t *testing.T) {
-	var emvTag types.EmvTag
+	var emvTag EmvTag
 
 	emvTag, err := parseEmvTag("000201")
 	assert.Nil(t, err)
-	assert.Equal(t, emvTag, types.EmvTag{
+	assert.Equal(t, emvTag, EmvTag{
 		Size:  2,
 		Value: "01",
 		Tag:   "00",
@@ -43,44 +42,44 @@ func TestParseEmvTag(t *testing.T) {
 
 	emvTag, err = parseEmvTag("0115thalesog@me.com")
 	assert.Nil(t, err)
-	assert.Equal(t, emvTag, types.EmvTag{
+	assert.Equal(t, emvTag, EmvTag{
 		Size:  15,
 		Value: "thalesog@me.com",
-		Tag:   "01",
+		Tag:   TagPixKey,
 	})
 }
 
 func TestParseMaiStatic(t *testing.T) {
-	parsedMai := parseMAI(types.EmvTag{
+	parsedMai := parseMAI(EmvTag{
 		Size:  37,
 		Value: "0014br.gov.bcb.pix0115thalesog@me.com",
-		Tag:   "26",
-	}, types.MerchantAccountInformation{})
+		Tag:   TagMerchantAccountInformation,
+	}, MaiStructure{})
 
-	assert.Equal(t, parsedMai, types.MerchantAccountInformation{
-		GUI: types.BcbGuiTag,
-		PixKey: types.EmvTag{
+	assert.Equal(t, parsedMai, MaiStructure{
+		GUI: BcbGuiTag,
+		PixKey: EmvTag{
 			Size:  15,
 			Value: "thalesog@me.com",
-			Tag:   "01",
+			Tag:   TagPixKey,
 		},
 	})
 }
 
 func TestParseMaiDynamic(t *testing.T) {
 
-	parsedMai := parseMAI(types.EmvTag{
+	parsedMai := parseMAI(EmvTag{
 		Size:  37,
 		Value: "0014br.gov.bcb.pix2552payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87",
-		Tag:   "26",
-	}, types.MerchantAccountInformation{})
+		Tag:   TagMerchantAccountInformation,
+	}, MaiStructure{})
 
-	assert.Equal(t, parsedMai, types.MerchantAccountInformation{
-		GUI: types.BcbGuiTag,
-		Url: types.EmvTag{
+	assert.Equal(t, parsedMai, MaiStructure{
+		GUI: BcbGuiTag,
+		Url: EmvTag{
 			Size:  52,
 			Value: "payload.psp.com/3ec9d2f9-5f03-4e0e-820d-63a81e769e87",
-			Tag:   "25",
+			Tag:   TagUrl,
 		},
 	})
 }

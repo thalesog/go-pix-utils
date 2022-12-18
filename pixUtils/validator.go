@@ -1,9 +1,7 @@
-package main
+package pixUtils
 
-import "github.com/thalesog/go-pix-utils/types"
-
-func getPixType(parsedEmv types.PixEmv) string {
-	if parsedEmv.MerchantAccountInformation.GUI.Value != types.BcbGui {
+func getPixType(parsedEmv PixEmv) string {
+	if parsedEmv.MerchantAccountInformation.GUI.Value != BcbGui {
 		return "invalid"
 	}
 

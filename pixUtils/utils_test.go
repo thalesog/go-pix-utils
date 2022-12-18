@@ -1,4 +1,4 @@
-package utils
+package pixUtils
 
 import (
 	"github.com/stretchr/testify/assert"

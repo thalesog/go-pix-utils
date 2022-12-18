@@ -1,4 +1,4 @@
-package utils
+package pixUtils
 
 import (
 	"golang.org/x/text/runes"
