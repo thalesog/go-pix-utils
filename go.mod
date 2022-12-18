@@ -2,7 +2,11 @@ module github.com/thalesog/go-pix-utils
 
 go 1.19
 
-require github.com/stretchr/testify v1.8.1
+require (
+	github.com/sigurn/crc16 v0.0.0-20211026045750-20ab5afb07e3
+	github.com/stretchr/testify v1.8.1
+	golang.org/x/text v0.5.0
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

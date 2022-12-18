@@ -35,11 +35,13 @@ go get github.com/thalesog/go-pix-utils
 ## 📍 To Do
 
 - [x] Parse Static Pix EMV
-- [ ] Parse Dynamic Pix EMV
-- [ ] Parse Pix without specifying the type
+- [X] Parse Dynamic Pix EMV
+- [X] Parse Pix without specifying the type
+- [X] Validate CRC16
 - [ ] Generate Static Pix EMV
 - [ ] Generate Dynamic Pix EMV
-- [ ] Generate QRCode from EMV
+- [ ] Generate QRCode from EMV or Pix
+- [ ] Refactor EMV parsing and remove DRY code
 
 # 🍰 Contributing
 
