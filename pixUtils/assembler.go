@@ -153,7 +153,7 @@ func CreateDynamicPix(params CreateDynamicPixParams) PixObject {
 		Size:  len(normalizedName),
 	}
 
-	cityLength := len(params.MerchantName)
+	cityLength := len(params.MerchantCity)
 	if cityLength > 15 {
 		cityLength = 15
 	}
